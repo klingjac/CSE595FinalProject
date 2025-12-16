@@ -101,7 +101,7 @@ python eval_scripts/eval_bias_rewriter.py
 python rl_bias/rl_bias_gpt2.py
 ```
 
-**Qwen Based Rewriting:**
+**Qwen Based Rewriting (Not Functional):**
 ```bash
 python rl_bias/rl_bias_qwen.py
 ```
