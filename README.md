@@ -108,12 +108,23 @@ python rl_bias/rl_bias_qwen.py
 
 ## Important Notes
 
-**Data Paths and Checkpoints**: All scripts require data paths and model checkpoint paths to be configured. Before running any script, please edit the relevant configuration variables (typically at the top of each script) to point to:
-- The correct location of your MBIB dataset
-- The correct paths for training data CSVs
-- The correct paths for model checkpoints and output directories
+**Configuration Required**: All scripts require data paths and model checkpoint paths to be configured before running. Each script has a clearly marked configuration section at the top:
 
-Ensure that all paths are absolute or correctly relative to the script execution directory.
+```python
+# ===== CONFIGURATION: Update these paths before running =====
+DATA_FILE = "multiclass-bias.csv"          # EDIT: Update to your data file path
+MODEL_DIR = "model_directory"              # EDIT: Update to your model directory
+# ===== END CONFIGURATION =====
+```
+
+Before running any script, please:
+1. Locate the **CONFIGURATION** section at the top of the script
+2. Update the file paths to match your setup:
+   - The location of your MBIB dataset CSV files
+   - The paths for model checkpoints and output directories
+3. Use absolute paths for maximum reliability, or ensure relative paths are correct for the script's location
+
+Scripts will validate paths and raise `FileNotFoundError` if files are not found, helping you identify configuration issues.
 
 ## Requirements
 

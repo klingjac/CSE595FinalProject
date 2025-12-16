@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
 """
 Evaluation script comparing baseline GPT-2 vs PPO-trained GPT-2 for bias rewriting.
@@ -265,18 +263,27 @@ def print_example_results(all_results: dict, num_examples: int = 3):
 
 def main():
     parser = argparse.ArgumentParser(description="Evaluate bias rewriter models")
-    parser.add_argument('--data', type=str, default='multiclass-bias.csv', help='Test data CSV')
+    parser.add_argument('--data', type=str, default='multiclass-bias.csv', help='Test data CSV (EDIT: update if needed)')
     parser.add_argument('--num_samples', type=int, default=100, help='Number of samples to evaluate (default: 100)')
     parser.add_argument('--baseline_only', action='store_true', help='Only evaluate baseline GPT-2')
     parser.add_argument('--ppo_only', action='store_true', help='Only evaluate PPO model')
-    parser.add_argument('--checkpoint', type=str, default=None, help='Optional checkpoint path to evaluate instead of final PPO model')
+    parser.add_argument('--checkpoint', type=str, default=None, help='Optional checkpoint path to evaluate instead of final PPO model (EDIT: update if needed)')
     parser.add_argument('--output', type=str, default='eval_results.csv', help='Output CSV for detailed results')
     
     args = parser.parse_args()
     
     base_path = os.path.dirname(os.path.abspath(__file__))
     data_path = os.path.join(base_path, args.data)
-    bert_dir = os.path.join(base_path, "bert_bias_classifier")
+    
+    # ===== CONFIGURATION: Update these paths if needed =====
+    # Path to the trained BERT bias classifier model saved by BERTs/train_bert.py
+    bert_dir = os.path.join(base_path, "bert_bias_classifier")  # EDIT: Update to your BERT model directory
+    
+    # Path to the trained PPO bias rewriting model (saved by rl_bias/rl_bias_gpt2.py)
+    # Or provide via --checkpoint argument
+    ppo_model_base_dir = os.path.join(base_path, "gpt2_bias_rewriter_ppo")  # EDIT: Update if needed
+    # ===== END CONFIGURATION =====
+    
     baseline_model_dir = None  # Will use HuggingFace GPT-2
     
     # Use checkpoint if provided, otherwise use final PPO model
@@ -284,7 +291,7 @@ def main():
         ppo_model_dir = args.checkpoint
         model_name = f"PPO Checkpoint ({os.path.basename(args.checkpoint)})"
     else:
-        ppo_model_dir = os.path.join(base_path, "gpt2_bias_rewriter_ppo")
+        ppo_model_dir = ppo_model_base_dir
         model_name = "PPO-trained GPT-2"
     
     print(f"Device: {DEVICE}")

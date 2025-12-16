@@ -2,10 +2,23 @@ import os
 import pandas as pd
 
 """
-This file exists to combine the various bias .csv files from the MBIB dataset.
+This file combines the various bias CSV files from the MBIB dataset into a unified dataset.
+
+IMPORTANT: Before running this script, copy the following CSV files from the MBIB dataset
+to this directory (dataset_utils/):
+    - cognitive-bias.csv
+    - political-bias.csv
+    - fake-news.csv
+    - gender-bias.csv
+    - racial-bias.csv
+    - hate-speech.csv
+
+This script will create:
+    - multiclass-bias-unbalanced.csv (all bias types combined)
+    - multiclass-bias.csv (balanced version for training)
 """
 
-# Define file paths and class labels
+# ===== CONFIGURATION: Update input paths if your CSV files are elsewhere =====
 bias_files = {
     'political': ['cognitive-bias.csv', 'political-bias.csv'],
     'fake_news': ['fake-news.csv'],
@@ -15,6 +28,7 @@ bias_files = {
     'linguistic': ['linguistic-bias.csv']
 }
 
+# EDIT: Set this to the directory containing the MBIB CSV files
 base_path = os.path.dirname(os.path.abspath(__file__))
 
 

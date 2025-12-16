@@ -7,15 +7,20 @@ from sklearn.preprocessing import LabelEncoder
 import joblib
 from tqdm import tqdm
 
-# Parameters
-DATA_FILE = "multiclass-bias.csv"  # Use balanced set
-MODEL_NAME = "logistic_regression_classifier"
+# ===== CONFIGURATION: Update these paths before running =====
+# Path to the multiclass bias CSV file created by dataset_utils/create_multiclass_bias.py
+DATA_FILE = "multiclass-bias.csv"  # EDIT: Update to your data file path
+MODEL_SAVE_DIR = "logistic_regression_classifier"  # EDIT: Where to save the trained model
+# ===== END CONFIGURATION =====
 
 print("Training Logistic Regression Multiclass Bias Classifier...")
 
 # Load data
 base_path = os.path.dirname(os.path.abspath(__file__))
-df = pd.read_csv(os.path.join(base_path, DATA_FILE))
+data_path = os.path.join(base_path, DATA_FILE)
+if not os.path.exists(data_path):
+    raise FileNotFoundError(f"Data file not found at: {data_path}. Please update DATA_FILE path in configuration.")
+df = pd.read_csv(data_path)
 print(f"Loaded {len(df)} samples from {DATA_FILE}")
 
 # Encode labels

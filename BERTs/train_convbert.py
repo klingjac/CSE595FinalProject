@@ -12,13 +12,17 @@ import wandb
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from config import WANDB_API_KEY
 
-# Parameters
-DATA_FILE = "multiclass-bias.csv"  # Use balanced set
+# ===== CONFIGURATION: Update these paths before running =====
+# Path to the multiclass bias CSV file created by dataset_utils/create_multiclass_bias.py
+DATA_FILE = "multiclass-bias.csv"  # EDIT: Update to your data file path
+MODEL_SAVE_DIR = "convbert_bias_classifier"  # EDIT: Where to save the trained model
+
+# Model hyperparameters
 MAX_LEN = 128
 BATCH_SIZE = 8
 EPOCHS = 100
 MODEL_NAME = "YituTech/conv-bert-base"
-SAVE_MODEL_NAME = "convbert_bias_classifier"
+# ===== END CONFIGURATION =====
 
 # Initialize wandb
 if WANDB_API_KEY:
@@ -30,8 +34,11 @@ else:
 
 # Load data
 base_path = os.path.dirname(os.path.abspath(__file__))
-df = pd.read_csv(os.path.join(base_path, DATA_FILE))
-print(f"Loaded {len(df)} samples from {DATA_FILE}")
+data_path = os.path.join(base_path, DATA_FILE)
+if not os.path.exists(data_path):
+    raise FileNotFoundError(f"Data file not found at: {data_path}. Please update DATA_FILE path in configuration.")
+df = pd.read_csv(data_path)
+print(f"Loaded {len(df)} samples from {data_path}")
 
 # Encode labels
 le = LabelEncoder()

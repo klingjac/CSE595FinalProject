@@ -1,5 +1,4 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+
 
 """
 This file contains an attempted implementation of the PPO rienforcement learning
@@ -25,18 +24,21 @@ from trl import PPOTrainer, PPOConfig, AutoModelForCausalLMWithValueHead
 from sentence_transformers import SentenceTransformer
 from peft import LoraConfig
 
-# ===================== Toggles & Hyperparams =====================
-LOG_EXAMPLES = True   # Set True to print one (prompt, response, reward debug) per batch
+# ===================== CONFIGURATION: Update these paths before running =====================
+# Path to the multiclass bias CSV file created by dataset_utils/create_multiclass_bias.py
+DATA_FILE = "multiclass-bias.csv"  # EDIT: Update to your data file path
 
-DATA_FILE = "multiclass-bias.csv"
-BERT_MODEL_DIR = "bert_bias_classifier"
+# Path to the trained BERT bias classifier model saved by BERTs/train_bert.py
+BERT_MODEL_DIR = "bert_bias_classifier"  # EDIT: Update to your BERT model directory
 
-# Qwen3-4B model from Hugging Face
+# ===== Model and Training Configuration =====
+# Qwen model from Hugging Face
 LLM_MODEL = "Qwen/Qwen3-4B"
 # If you want, you can try the instruct version:
 # LLM_MODEL = "Qwen/Qwen3-4B-Instruct-2507"
 
-SAVE_DIR = "qwen3_4b_qllora_bias_rewriter_ppo"
+# Directory where trained RL model checkpoints will be saved
+SAVE_DIR = "qwen3_4b_qllora_bias_rewriter_ppo"  # EDIT: Where to save trained models
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 SEED = 42

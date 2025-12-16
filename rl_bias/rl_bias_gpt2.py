@@ -1,5 +1,4 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+
 
 """
 This file contains an implementation of the PPO reinforcement learning setup using
@@ -26,11 +25,18 @@ from sentence_transformers import SentenceTransformer
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from config import WANDB_API_KEY
 
-# ----------------------------- Config -----------------------------
-DATA_FILE = "multiclass-bias.csv"
-BERT_MODEL_DIR = "bert_bias_classifier"
+# ----------------------------- CONFIGURATION: Update these paths before running ----------------------------
+# Path to the multiclass bias CSV file created by dataset_utils/create_multiclass_bias.py
+DATA_FILE = "multiclass-bias.csv"  # EDIT: Update to your data file path
+
+# Path to the trained BERT bias classifier model saved by BERTs/train_bert.py
+BERT_MODEL_DIR = "bert_bias_classifier"  # EDIT: Update to your BERT model directory
+
+# Directory where trained RL model checkpoints will be saved
+SAVE_DIR = "gpt2_large_bias_rewriter_ppo"  # EDIT: Where to save trained models
+
+# ===== Model and Training Configuration =====
 LLM_MODEL = "gpt2-large"  # 774M params - 6.2x larger than gpt2
-SAVE_DIR = "gpt2_large_bias_rewriter_ppo"
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 SEED = 42

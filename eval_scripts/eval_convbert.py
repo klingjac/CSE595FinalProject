@@ -8,9 +8,15 @@ from sklearn.metrics import classification_report, confusion_matrix, accuracy_sc
 import joblib
 from tqdm import tqdm
 
-# --- Config ---
-DATA_FILE = "multiclass-bias.csv"
-MODEL_DIR = "/home/jacob/CSE595/final_project/MBIB/convbert_results/checkpoint-236210"
+# ===== CONFIGURATION: Update these paths before running =====
+# Path to the multiclass bias CSV file used for evaluation
+DATA_FILE = "multiclass-bias.csv"  # EDIT: Update to your data file path
+
+# Path to the trained ConvBERT model checkpoint
+# If you trained the model with BERTs/train_convbert.py, it will be in a checkpoint directory
+MODEL_DIR = "convbert_bias_classifier"  # EDIT: Update to your model checkpoint path
+# ===== END CONFIGURATION =====
+
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 MAX_LEN = 128
 BATCH_SIZE = 32
@@ -19,11 +25,18 @@ print(f"Using device: {DEVICE}")
 
 # Load data
 base_path = os.path.dirname(os.path.abspath(__file__))
-df = pd.read_csv(os.path.join(base_path, DATA_FILE))
-print(f"Loaded {len(df)} samples from {DATA_FILE}")
+data_path = os.path.join(base_path, DATA_FILE)
+if not os.path.exists(data_path):
+    raise FileNotFoundError(f"Data file not found at: {data_path}. Please update DATA_FILE path in configuration.")
+df = pd.read_csv(data_path)
+print(f"Loaded {len(df)} samples from {data_path}")
 
 # Load model and tokenizer
-model_path = "/home/jacob/CSE595/final_project/MBIB/convbert_results/checkpoint-236210"
+model_path = MODEL_DIR
+if not os.path.isabs(model_path):
+    model_path = os.path.join(base_path, model_path)
+if not os.path.exists(model_path):
+    raise FileNotFoundError(f"Model directory not found at: {model_path}. Please update MODEL_DIR path in configuration.")
 print(f"Loading ConvBERT model from {model_path}")
 model = AutoModelForSequenceClassification.from_pretrained(model_path).to(DEVICE)
 # Load tokenizer from HuggingFace (ConvBERT base)

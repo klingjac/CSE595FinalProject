@@ -8,9 +8,14 @@ from sklearn.metrics import classification_report, confusion_matrix, accuracy_sc
 import joblib
 from tqdm import tqdm
 
-# --- Config ---
-DATA_FILE = "multiclass-bias.csv"
-BERT_MODEL_DIR = "bert_bias_classifier"
+# ===== CONFIGURATION: Update these paths before running =====
+# Path to the multiclass bias CSV file used for evaluation
+DATA_FILE = "multiclass-bias.csv"  # EDIT: Update to your data file path
+
+# Path to the trained BERT model saved by BERTs/train_bert.py
+BERT_MODEL_DIR = "bert_bias_classifier"  # EDIT: Update to your model directory
+# ===== END CONFIGURATION =====
+
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 MAX_LEN = 128
 BATCH_SIZE = 32
@@ -19,7 +24,10 @@ print(f"Using device: {DEVICE}")
 
 # Load data
 base_path = os.path.dirname(os.path.abspath(__file__))
-df = pd.read_csv(os.path.join(base_path, DATA_FILE))
+data_path = os.path.join(base_path, DATA_FILE)
+if not os.path.exists(data_path):
+    raise FileNotFoundError(f"Data file not found at: {data_path}. Please update DATA_FILE path in configuration.")
+df = pd.read_csv(data_path)
 print(f"Loaded {len(df)} samples from {DATA_FILE}")
 
 # Load BERT model and tokenizer

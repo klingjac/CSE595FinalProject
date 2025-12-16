@@ -6,16 +6,24 @@ from transformers import BertTokenizer, BertForSequenceClassification, Trainer, 
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import classification_report
 
-# Parameters
-DATA_FILE = "multiclass-bias.csv"  # Use balanced set for demo
+# ===== CONFIGURATION: Update these paths before running =====
+# Path to the multiclass bias CSV file created by dataset_utils/create_multiclass_bias.py
+DATA_FILE = "multiclass-bias.csv"  # EDIT: Update to your data file path
+MODEL_SAVE_DIR = "bert_bias_classifier"  # EDIT: Where to save the trained model
+
+# Model hyperparameters
 MAX_LEN = 128
 BATCH_SIZE = 8
-EPOCHS = 100  # For demo, increase for real training
+EPOCHS = 100
 MODEL_NAME = "bert-base-uncased"
+# ===== END CONFIGURATION =====
 
 # Load data
 base_path = os.path.dirname(os.path.abspath(__file__))
-df = pd.read_csv(os.path.join(base_path, DATA_FILE))
+data_path = os.path.join(base_path, DATA_FILE)
+if not os.path.exists(data_path):
+    raise FileNotFoundError(f"Data file not found at: {data_path}. Please update DATA_FILE path in configuration.")
+df = pd.read_csv(data_path)
 
 # Encode labels
 le = LabelEncoder()

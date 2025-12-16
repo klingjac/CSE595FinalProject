@@ -1,3 +1,9 @@
+# ===== CONFIGURATION: Update these paths before running =====
+# Path to the multiclass bias CSV file created by dataset_utils/create_multiclass_bias.py
+DATA_FILE = "multiclass-bias.csv"  # EDIT: Update to your data file path
+DATA_FILE_UNBALANCED = "multiclass-bias-unbalanced.csv"  # EDIT: Update if needed
+# ===== END CONFIGURATION =====
+
 import os
 import pandas as pd
 import numpy as np
